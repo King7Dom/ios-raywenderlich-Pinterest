@@ -11,3 +11,11 @@ import UIKit
 class PinterestLayout: UICollectionViewLayout {
 
 }
+
+
+// MARK: PinterestLayoutDelegate protocol
+
+protocol PinterestLayoutDelegate {
+  func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, WithWidth width: CGFloat) -> CGFloat
+  func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, WithWidth width: CGFloat) -> CGFloat
+}
