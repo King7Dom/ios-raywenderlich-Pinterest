@@ -10,6 +10,27 @@ import UIKit
 
 class PinterestLayout: UICollectionViewLayout {
 
+  var delegate: PinterestLayoutDelegate
+  var numberOfColumns = 2
+  var cellPadding: CGFloat = 6.0
+
+  private var layoutAttributesCache = [UICollectionViewLayoutAttributes]()
+  private var contentHeight: CGFloat = 0.0
+  private var contentWidth: CGFloat {
+    let insets = collectionView!.contentInset
+    return CGRectGetWidth(collectionView!.bounds) - (insets.left + insets.right)
+  }
+
+  override func prepareLayout() {
+  }
+
+  override func collectionViewContentSize() -> CGSize {
+    return CGSizeZero
+  }
+
+  override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    return nil
+  }
 }
 
 
