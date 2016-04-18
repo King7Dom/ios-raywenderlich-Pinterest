@@ -10,7 +10,7 @@ import UIKit
 
 class PinterestLayout: UICollectionViewLayout {
 
-  var delegate: PinterestLayoutDelegate
+  var delegate: PinterestLayoutDelegate!
   var numberOfColumns = 2
   var cellPadding: CGFloat = 6.0
 
@@ -19,16 +19,6 @@ class PinterestLayout: UICollectionViewLayout {
   private var contentWidth: CGFloat {
     let insets = collectionView!.contentInset
     return CGRectGetWidth(collectionView!.bounds) - (insets.left + insets.right)
-  }
-  
-  init(delegate: PinterestLayoutDelegate) {
-    self.delegate = delegate
-    
-    super.init()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   override func prepareLayout() {
