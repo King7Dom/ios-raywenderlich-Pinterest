@@ -75,7 +75,7 @@ class PinterestLayout: UICollectionViewLayout {
   }
 
   override func collectionViewContentSize() -> CGSize {
-    return CGSizeZero
+    return CGSize(width: contentWidth, height: contentHeight)
   }
 
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
