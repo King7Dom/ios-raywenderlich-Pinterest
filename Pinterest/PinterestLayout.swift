@@ -14,11 +14,15 @@ class PinterestLayout: UICollectionViewLayout {
   var numberOfColumns = 2
   var cellPadding: CGFloat = 6.0
 
-  private var layoutAttributesCache = [UICollectionViewLayoutAttributes]()
+  private var layoutAttributesCache = [PinterestLayoutAttributes]()
   private var contentHeight: CGFloat = 0.0
   private var contentWidth: CGFloat {
     let insets = collectionView!.contentInset
     return CGRectGetWidth(collectionView!.bounds) - (insets.left + insets.right)
+  }
+  
+  override class func layoutAttributesClass() -> AnyClass {
+    return PinterestLayoutAttributes.self
   }
 
   override func prepareLayout() {
@@ -50,9 +54,10 @@ class PinterestLayout: UICollectionViewLayout {
           let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
           let insetFrame = CGRectInset(frame, cellPadding, cellPadding)
           // UICollectionViewLayoutAttribute
-          let attribute = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
-          attribute.frame = insetFrame
-          layoutAttributesCache.append(attribute)
+          let attributes = PinterestLayoutAttributes(forCellWithIndexPath: indexPath)
+          attributes.photoHeight = photoHeight
+          attributes.frame = insetFrame
+          layoutAttributesCache.append(attributes)
           // expands contentHeight to account for the frame of the newly calculated item
           contentHeight = max(contentHeight, CGRectGetMaxY(frame))
           // advances the yOffset for the current column based on the frame
@@ -61,6 +66,7 @@ class PinterestLayout: UICollectionViewLayout {
           column = column >= (numberOfColumns - 1) ? 0 : column+1
         }
       }
+      contentHeight += 100
     }
   }
 
@@ -86,4 +92,29 @@ class PinterestLayout: UICollectionViewLayout {
 protocol PinterestLayoutDelegate {
   func collectionView(collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: NSIndexPath, WithWidth width: CGFloat) -> CGFloat
   func collectionView(collectionView: UICollectionView, heightForAnnotationAtIndexPath indexPath: NSIndexPath, WithWidth width: CGFloat) -> CGFloat
+}
+
+
+// MARK: UICollectionViewLayoutAttributes Subclass
+
+class PinterestLayoutAttributes: UICollectionViewLayoutAttributes {
+  
+    /// cell will use this to resize its image view
+  var photoHeight: CGFloat = 0.0
+  
+  // Subclasses of UICollectionViewLayoutAttributes need to conform to the NSCopying protocol because the attribute’s objects can be copied internally. Overriding this method to guarantee that the photoHeight property is set when the object is copied.
+  override func copyWithZone(zone: NSZone) -> AnyObject {
+    let copy = super.copyWithZone(zone) as! PinterestLayoutAttributes
+    copy.photoHeight = photoHeight
+    return copy
+  }
+  
+  // The collection view determines whether the attributes have changed by comparing the old and new attribute objects using isEqual(_:). You must implement it to compare the custom properties of your subclass. The code compares the photoHeight of both instances, and if they are equal, calls super to determine if the inherited attributes are the same. If the photo heights are different, it returns false.
+  override func isEqual(object: AnyObject?) -> Bool {
+    if let attributes = object as? PinterestLayoutAttributes where attributes.photoHeight == photoHeight {
+      return super.isEqual(object)
+    } else {
+      return false
+    }
+  }
 }
