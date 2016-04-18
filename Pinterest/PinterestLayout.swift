@@ -20,6 +20,16 @@ class PinterestLayout: UICollectionViewLayout {
     let insets = collectionView!.contentInset
     return CGRectGetWidth(collectionView!.bounds) - (insets.left + insets.right)
   }
+  
+  init(delegate: PinterestLayoutDelegate) {
+    self.delegate = delegate
+    
+    super.init()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   override func prepareLayout() {
   }
