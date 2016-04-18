@@ -79,7 +79,14 @@ class PinterestLayout: UICollectionViewLayout {
   }
 
   override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    return nil
+    var layoutAttributes = [UICollectionViewLayoutAttributes]()
+    
+    for attribute in layoutAttributesCache {
+      if CGRectIntersectsRect(rect, attribute.frame) {
+        layoutAttributes.append(attribute)
+      }
+    }
+    return layoutAttributes
   }
 }
 
